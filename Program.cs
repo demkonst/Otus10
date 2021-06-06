@@ -8,6 +8,7 @@ namespace Otus10
 {
     internal class Program
     {
+        private const int Count = 100_000;
         private static CsvSerializer _csvSerializer;
 
         public static async Task Main()
@@ -18,8 +19,7 @@ namespace Otus10
             TestJson(obj);
 
             const string path = "data.csv";
-            const int count = 1_000;
-            await GenerateCsv(path, count);
+            await GenerateCsv(path);
             var csvLoader = new CsvLoader(_csvSerializer);
             var items = await csvLoader.LoadFromFile<TestClass>(path);
             Console.WriteLine($"CsvLoader has loaded {items.Count} items");
@@ -34,7 +34,7 @@ namespace Otus10
             {
                 string csv = null;
 
-                for (var i = 0; i < 100_000; i++)
+                for (var i = 0; i < Count; i++)
                 {
                     csv = _csvSerializer.Serialize(obj);
                 }
@@ -46,7 +46,7 @@ namespace Otus10
             {
                 TestClass result = null;
 
-                for (var i = 0; i < 100_000; i++)
+                for (var i = 0; i < Count; i++)
                 {
                     result = _csvSerializer.Deserialize<TestClass>(serializeCsvElapseResult.Result);
                 }
@@ -81,7 +81,7 @@ namespace Otus10
             {
                 string csv = null;
 
-                for (var i = 0; i < 100_000; i++)
+                for (var i = 0; i < Count; i++)
                 {
                     csv = JsonSerializer.Serialize(obj);
                 }
@@ -93,7 +93,7 @@ namespace Otus10
             {
                 TestClass result = null;
 
-                for (var i = 0; i < 100_000; i++)
+                for (var i = 0; i < Count; i++)
                 {
                     result = JsonSerializer.Deserialize<TestClass>(serializeElapseResult.Result);
                 }
@@ -108,7 +108,7 @@ namespace Otus10
             Console.WriteLine($"elapsed ms: {deserializeElapseResult.Elapsed.Milliseconds}");
         }
 
-        private static async Task GenerateCsv(string path, int count)
+        private static async Task GenerateCsv(string path)
         {
             if (File.Exists(path))
             {
@@ -117,7 +117,7 @@ namespace Otus10
 
             await using var sw = File.AppendText(path);
 
-            for (var i = 0; i < count; i++)
+            for (var i = 0; i < Count; i++)
             {
                 var line = _csvSerializer.Serialize(TestClass.New());
                 await sw.WriteLineAsync(line);
