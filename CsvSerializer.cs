@@ -2,11 +2,16 @@
 
 namespace Otus10
 {
-    public static class CsvSerializer
+    public class CsvSerializer
     {
-        private const char Delimiter = ',';
+        private readonly char _delimiter;
 
-        public static string Serialize<T>(T obj) where T: new()
+        public CsvSerializer(char delimiter = ',')
+        {
+            _delimiter = delimiter;
+        }
+
+        public string Serialize<T>(T obj) where T: new()
         {
             var type = obj.GetType();
             var properties = type.GetProperties();
@@ -17,12 +22,12 @@ namespace Otus10
                 values.Add(propertyInfo.GetValue(obj)?.ToString() ?? string.Empty);
             }
 
-            return string.Join(Delimiter, values);
+            return string.Join(_delimiter, values);
         }
 
-        public static T Deserialize<T>(string value) where T: new()
+        public T Deserialize<T>(string value) where T: new()
         {
-            var props = value.Split(Delimiter);
+            var props = value.Split(_delimiter);
 
             var result = new T();
             var properties = result.GetType().GetProperties();
