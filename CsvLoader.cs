@@ -4,16 +4,16 @@ using System.Threading.Tasks;
 
 namespace Otus10
 {
-    public class CsvLoader
+    public class CsvLoader<T> where T: new()
     {
-        private readonly CsvSerializer _csvSerializer;
+        private readonly CsvSerializer<T> _csvSerializer;
 
-        public CsvLoader(CsvSerializer csvSerializer)
+        public CsvLoader(CsvSerializer<T> csvSerializer)
         {
             _csvSerializer = csvSerializer;
         }
 
-        public async Task<List<T>> LoadFromFile<T>(string path) where T: new()
+        public async Task<List<T>> LoadFromFile(string path)
         {
             var result = new List<T>();
 
@@ -21,7 +21,7 @@ namespace Otus10
             while (!sr.EndOfStream)
             {
                 var line = await sr.ReadLineAsync();
-                result.Add(_csvSerializer.Deserialize<T>(line));
+                result.Add(_csvSerializer.Deserialize(line));
             }
 
             return result;

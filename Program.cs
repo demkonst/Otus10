@@ -9,19 +9,19 @@ namespace Otus10
     internal class Program
     {
         private const int Count = 1_000_000;
-        private static CsvSerializer _csvSerializer;
+        private static CsvSerializer<TestClass> _csvSerializer;
 
         public static async Task Main()
         {
             var obj = TestClass.New();
-            _csvSerializer = new CsvSerializer();
+            _csvSerializer = new CsvSerializer<TestClass>();
             TestCsv(obj);
             TestJson(obj);
 
             const string path = "data.csv";
             await GenerateCsv(path);
-            var csvLoader = new CsvLoader(_csvSerializer);
-            var items = await csvLoader.LoadFromFile<TestClass>(path);
+            var csvLoader = new CsvLoader<TestClass>(_csvSerializer);
+            var items = await csvLoader.LoadFromFile(path);
             Console.WriteLine($"CsvLoader has loaded {items.Count} items");
 
             Console.WriteLine();
@@ -48,7 +48,7 @@ namespace Otus10
 
                 for (var i = 0; i < Count; i++)
                 {
-                    result = _csvSerializer.Deserialize<TestClass>(serializeCsvElapseResult.Result);
+                    result = _csvSerializer.Deserialize(serializeCsvElapseResult.Result);
                 }
 
                 return result;
