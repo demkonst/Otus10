@@ -8,7 +8,7 @@ namespace Otus10
 {
     internal class Program
     {
-        private const int Count = 100_000;
+        private const int Count = 1_000_000;
         private static CsvSerializer _csvSerializer;
 
         public static async Task Main()
@@ -59,10 +59,10 @@ namespace Otus10
 
             Console.WriteLine("Serialize result:");
             Console.WriteLine($"csv: \"{serializeCsvElapseResult.Result}\"");
-            Console.WriteLine($"Elapsed ms: {serializeCsvElapseResult.Elapsed.Milliseconds}");
+            Console.WriteLine($"Elapsed ms: {serializeCsvElapseResult.Elapsed.TotalMilliseconds:F0}");
 
             Console.WriteLine("Deserialize result:");
-            Console.WriteLine($"elapsed ms: {deserializeCsvElapseResult.Elapsed.Milliseconds}");
+            Console.WriteLine($"elapsed ms: {deserializeCsvElapseResult.Elapsed.TotalMilliseconds:F0}");
 
             sw.Stop();
 
@@ -102,10 +102,10 @@ namespace Otus10
             });
 
             Console.WriteLine("JSON serialize result:");
-            Console.WriteLine($"Elapsed ms: {serializeElapseResult.Elapsed.Milliseconds}");
+            Console.WriteLine($"Elapsed ms: {serializeElapseResult.Elapsed.TotalMilliseconds:F0}");
 
             Console.WriteLine("JSON deserialize result:");
-            Console.WriteLine($"elapsed ms: {deserializeElapseResult.Elapsed.Milliseconds}");
+            Console.WriteLine($"elapsed ms: {deserializeElapseResult.Elapsed.TotalMilliseconds:F0}");
         }
 
         private static async Task GenerateCsv(string path)
