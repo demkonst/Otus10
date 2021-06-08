@@ -2,7 +2,7 @@
 
 namespace Otus10
 {
-    public class CsvSerializer
+    public class CsvSerializer<T> where T: new()
     {
         private readonly char _delimiter;
 
@@ -11,7 +11,7 @@ namespace Otus10
             _delimiter = delimiter;
         }
 
-        public string Serialize<T>(T obj) where T: new()
+        public string Serialize(T obj)
         {
             var type = obj.GetType();
             var properties = type.GetProperties();
@@ -25,7 +25,7 @@ namespace Otus10
             return string.Join(_delimiter, values);
         }
 
-        public T Deserialize<T>(string value) where T: new()
+        public T Deserialize(string value)
         {
             var props = value.Split(_delimiter);
 
